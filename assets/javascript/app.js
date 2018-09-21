@@ -12,10 +12,6 @@ firebase.initializeApp(config);
 // Create a variable to reference the database
 var dataRef = firebase.database();
 
-var trainName = "";
-var destination = "";
-var frequency = 0;
-var firstTrain = 0;
 
 // Whenever user clicks add train button, new train is appended to the schedule
 $("#add-train").on("click", function (event) {
@@ -25,11 +21,6 @@ $("#add-train").on("click", function (event) {
     var destination = $("#destination").val().trim();
     var frequency = $("#frequency").val().trim();
     var firstTrain = $("#first-train").val().trim();
-
-    console.log(trainName);
-    console.log(destination);
-    console.log(frequency);
-    console.log(firstTrain);
 
     // Code for the push
     dataRef.ref().push({
@@ -41,7 +32,7 @@ $("#add-train").on("click", function (event) {
         dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
 
-    
+
 });
 
 
@@ -51,10 +42,10 @@ dataRef.ref().on("child_added", function (childSnapshot) {
     var destination = childSnapshot.val().destination;
     var frequency = childSnapshot.val().frequency;
     var firstTrain = childSnapshot.val().firstTrain;
-    
+
     //calculation goes below this line
     var timeArr = firstTrain.split(":");
-    
+
     var trainTime = moment().hours(timeArr[0]).minutes(timeArr[1]);
     //console.log(trainTime);
 
@@ -69,12 +60,12 @@ dataRef.ref().on("child_added", function (childSnapshot) {
     } else {
         // difference time is how long it has passed since first train of the day
         var diffTime = moment().diff(trainTime, "minutes");
-        var tRemainder = diffTime%frequency;
+        var tRemainder = diffTime % frequency;
         var tMinutes = frequency - tRemainder;
         var tArrival = moment().add(tMinutes, "m").format("hh:mm A");
     }
-    
-    var newTableRow = "<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + firstTrain + "</td><td>" + frequency + "</td><td>" + tArrival + "</td><td>" + tMinutes + "</td></tr>";
+
+    var newTableRow = "<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + trainTime.format("hh:mm A") + "</td><td>" + frequency + "</td><td>" + tArrival + "</td><td>" + tMinutes + "</td></tr>";
     $("tbody").append(newTableRow);
     console.log(childSnapshot.val());
 
@@ -85,4 +76,3 @@ dataRef.ref().on("child_added", function (childSnapshot) {
 
 
 
-    

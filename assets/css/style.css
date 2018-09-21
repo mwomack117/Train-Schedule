@@ -1,3 +1,19 @@
-.header {
-    background-color: beige;
+
+.jumbotron {
+    background-color: #6C9C88;
+    color: white;
+    font-family: 'Merriweather', serif;
+    background-image: url("./assets/red-train.jpg");
 }
+
+body {
+    background-color: beige;
+};
+
+.panel-heading {
+    background-color: #642834;
+    color: white;
+}
+
+
+background-color: #6C9C88;
